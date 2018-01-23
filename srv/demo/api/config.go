@@ -4,6 +4,8 @@ import (
 	"SKnife/srv"
 	"SKnife/conf"
 	"fmt"
+	"net/http"
+	"github.com/justinas/alice"
 )
 
 type service struct {
@@ -11,7 +13,7 @@ type service struct {
 }
 
 const (
-	HELLO_VERSION = "1.9.4"
+	HELLO_VERSION = "0.0.1"
 )
 
 func NewService() srv.Service {
@@ -31,7 +33,13 @@ func (s *service) Config(conf *conf.ServiceConf) error {
 	return nil
 }
 
+
 func (s *service) Start() {
-	// start code from here:
-	fmt.Println("start from here....service name:", s.conf.Name)
+	fmt.Println("start " + s.conf.Name + " service listen host:", s.conf.Server.Host, " port:", s.conf.Server.Port)
+	addr := fmt.Sprintf("%s:%d", s.conf.Server.Host, s.conf.Server.Port)
+	common := alice.New()
+	http.Handle("/hello", common.ThenFunc(s.Hello))
+	if e := http.ListenAndServe(addr, nil); e != nil {
+		panic(e)
+	}
 }

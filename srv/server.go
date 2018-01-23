@@ -21,7 +21,7 @@ func RunService(service Service) {
 		panic(err)
 	}
 
-	extraProgName := fmt.Sprintf("-version:%s -port:%d -group:%s", service.Version(), conf.Server.Port)
+	extraProgName := fmt.Sprintf("-version:%s -port:%d", service.Version(), conf.Server.Port)
 	utils.SetVersion(extraProgName)
 	service.Config(conf)
 	service.Start()
