@@ -7,7 +7,7 @@ import (
 )
 
 type service struct {
-	name string
+	conf *conf.ServiceConf
 }
 
 const (
@@ -19,7 +19,7 @@ func NewService() srv.Service {
 }
 
 func (s *service) Name() string {
-	return "demoService!"
+	return "demoService"
 }
 
 func (s *service) Version() string {
@@ -27,10 +27,11 @@ func (s *service) Version() string {
 }
 
 func (s *service) Config(conf *conf.ServiceConf) error {
+	s.conf = conf
 	return nil
 }
 
 func (s *service) Start() {
-	// start from here...
-	fmt.Println("start from here....")
+	// start code from here:
+	fmt.Println("start from here....service name:", s.conf.Name)
 }
